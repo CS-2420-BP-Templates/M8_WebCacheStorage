@@ -1,0 +1,28 @@
+name: CMake Build & Tests
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up CMake
+        uses: jwlawson/actions-setup-cmake@v1
+
+      - name: Install dependencies (none needed unless you add libraries)
+        run: sudo apt-get update
+
+      - name: Configure with CMake
+        run: cmake -S . -B build
+
+      - name: Build
+        run: cmake --build build --config Debug
+
+      - name: Run tests
+        run: ctest --test-dir build --output-on-failure
